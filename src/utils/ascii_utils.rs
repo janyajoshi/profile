@@ -1,6 +1,7 @@
 use std::fmt::Write; // Import write! macro for String
 //  http://patorjk.com/software/taag/#p=display&h=1&v=0&f=Doom&t=Janya%20Joshi
 //  https://coolors.co/gradient-palette/7c00b1-c40000?number=8
+use crate::utils::info;
 
 const NAME: &str = r#"
    ___                                 ___              _      _
@@ -65,47 +66,18 @@ fn interpolate_color(start: usize, end: usize, steps: usize, current_step: usize
 }
 
 pub fn contact() -> String {
-    let contact_info = "\
-    Janya Joshi\
-    \nFull Stack Dev - Enterprise AI & Data - Boeing India
-    \nEmail: janyajoshi18@gmail.com\
-    \nLinkedIn: https://www.linkedin.com/in/janyajoshi/\
-    \nYoutube: https://www.youtube.com/@janyajoshi\
-    \nNPM: https://www.npmjs.com/~janyajoshi";
-
     let colors = [93, 204]; // Purple (93), Blue (21), Red (204)
     let steps_per_color = 4;  // Number of steps between each color transition
 
     let mut result = String::new();
     result.push_str(&build_gradient_text(NAME, &colors, steps_per_color));
-    result.push_str(&build_colored_section("Contact:\n", contact_info));
+    result.push_str(&build_colored_section("Contact:\n", info::CONTACT));
     result
 }
 
 pub fn detail() -> String {
     // sections
-    let contact_info = "\
-    Janya Joshi\
-    \nFull Stack Dev - Enterprise AI & Data - Boeing India
-    \nEmail: janyajoshi18@gmail.com\
-    \nLinkedIn: https://www.linkedin.com/in/janyajoshi/\
-    \nYoutube: https://www.youtube.com/@janyajoshi\
-    \nNPM: https://www.npmjs.com/~janyajoshi";
 
-    let summary = "Experienced software developer with a strong background in building scalable \
-    applications. Proficient in Rust, Java, and JavaScript.";
-
-    let skills = "\
-    • Backend Development\n• Gateways, Load Balancers\n• Microservices\n• Security\
-    \n• Messaging\n• Sockets\n• Streaming\n• Databases\n• Containerization\n• Devops";
-
-    let experience = "\
-    • Full Stack Developer @ Boeing (May 2022 - Present)\
-    \n• Dev - 1 DCR @ Cognizant (July 2021 - May 2022)";
-
-    let education = "\
-    Bachelor of Technology in Computer Science & Engineering\
-    \nSRM University, Chennai (2017 - 2021)";
 
     //  Define color stops for the gradient (Purple -> Blue -> Red)
     //  https://coolors.co/gradient-palette/7c00b1-c40000?number=8
@@ -115,11 +87,12 @@ pub fn detail() -> String {
     // Build the final resume output
     let mut result = String::new();
     result.push_str(&build_gradient_text(NAME, &colors, steps_per_color));
-    result.push_str(&build_colored_section("Contact:\n", contact_info));
-    result.push_str(&build_colored_section("Summary:\n", summary));
-    result.push_str(&build_colored_section("Skills:\n", skills));
-    result.push_str(&build_colored_section("Experience:\n", experience));
-    result.push_str(&build_colored_section("Education:\n", education));
-
+    result.push_str(&build_colored_section("Contact:\n", info::CONTACT));
+    result.push_str(&build_colored_section("Summary:\n", info::SUMMARY));
+    result.push_str(&build_colored_section("Highlights:\n", info::HIGHLIGHTS));
+    result.push_str(&build_colored_section("Personal Projects:\n", info::PERSONAL_PROJECTS));
+    result.push_str(&build_colored_section("Skills:\n", info::SKILLS));
+    result.push_str(&build_colored_section("Experience:\n", info::EXPERIENCE));
+    result.push_str(&build_colored_section("Education:\n", info::EDUCATION));
     result
 }

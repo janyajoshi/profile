@@ -1,18 +1,19 @@
-use actix_web::{get, web::ServiceConfig, HttpRequest};
+use actix_web::{get, web::ServiceConfig, HttpRequest, Responder};
 use shuttle_actix_web::ShuttleActixWeb;
 
 mod utils {
     pub mod ascii_utils;
     pub mod profile;
+    pub mod info;
 }
 
 #[get("/")]
-async fn contact(http_request: HttpRequest) -> String {
+async fn contact(http_request: HttpRequest) -> impl Responder {
     utils::profile::get_profile(http_request, false)
 }
 
 #[get("/r")]
-async fn detail(http_request: HttpRequest) -> String {
+async fn detail(http_request: HttpRequest) -> impl Responder {
     utils::profile::get_profile(http_request, true)
 }
 
