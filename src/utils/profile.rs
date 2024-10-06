@@ -17,7 +17,7 @@ pub fn get_profile(http_request: HttpRequest, get_detail: bool) -> impl Responde
             .content_type("text/plain")
             .body(String::from(format!("\
             This works better on a shell.\
-            \nTry \"curl {}\"", http_request.full_url())))
+            \nTry \"curl {}\"", http_request.full_url().to_string().replace("http:", "https:"))))
     } else {
         let res = if get_detail { String::from(detail()) } else { String::from(contact()) };
         let stream = stream! {
