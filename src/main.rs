@@ -1,5 +1,6 @@
 use actix_web::{get, web::ServiceConfig, HttpRequest, Responder};
 use shuttle_actix_web::ShuttleActixWeb;
+use actix_files::Files;
 
 mod utils {
     pub mod ascii_utils;
@@ -22,6 +23,7 @@ async fn main() -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clon
     let config = move |cfg: &mut ServiceConfig| {
         cfg.service(contact);
         cfg.service(detail);
+        cfg.service(Files::new("/assets", "assets"));
     };
 
     Ok(config.into())

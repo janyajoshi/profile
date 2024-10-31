@@ -1,3 +1,4 @@
+use std::fs;
 use actix_web::http::header::{USER_AGENT};
 use actix_web::{HttpRequest, HttpResponse, Responder};
 use async_stream::stream;
@@ -13,11 +14,12 @@ pub fn get_profile(http_request: HttpRequest, get_detail: bool) -> impl Responde
     };
 
     if !agent.contains("curl") {
+        let html = fs::read_to_string("assets/profile.html").unwrap();
+        let url = http_request.full_url().to_string().replace("http:", "https:");
+        let html_content = html.replace("{url}", &url);
         HttpResponse::Ok()
-            .content_type("text/plain")
-            .body(String::from(format!("\
-            This works better on a shell.\
-            \nTry \"curl {}\"", http_request.full_url().to_string().replace("http:", "https:"))))
+            .content_type("text/html; charset=utf-8")
+            .body(html_content)
     } else {
         let res = if get_detail { String::from(detail()) } else { String::from(contact()) };
         let stream = stream! {
