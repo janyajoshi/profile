@@ -867,7 +867,23 @@ main {
   border-radius: inherit;
 }
 
-
+/**
+* Custom
+*/
+.skill-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.skill-chip {
+  color: var(--white-1) !important;
+  background: var(--onyx);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-300);
+  width: max-content;
+  padding: 3px 12px;
+  border-radius: 8px;
+}
 
 
 
@@ -1220,8 +1236,6 @@ textarea.form-input::-webkit-resizer { display: none; }
 .form-btn:disabled:hover { background: var(--border-gradient-onyx); }
 
 .form-btn:disabled:hover::before { background: var(--bg-gradient-jet); }
-
-
 
 
 

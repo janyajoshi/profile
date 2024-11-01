@@ -1001,6 +1001,7 @@ dependencies = [
  "actix-files",
  "actix-web",
  "async-stream",
+ "regex",
  "shuttle-actix-web",
  "shuttle-runtime",
  "tokio",

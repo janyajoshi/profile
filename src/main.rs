@@ -6,6 +6,7 @@ mod utils {
     pub mod ascii_utils;
     pub mod profile;
     pub mod info;
+    pub mod ascii_to_html;
 }
 
 #[get("/")]
