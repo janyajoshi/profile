@@ -10,23 +10,26 @@ mod utils {
 
 #[get("/")]
 async fn contact(http_request: HttpRequest) -> impl Responder {
+    println!("Called root");
     utils::profile::get_profile(http_request, false)
 }
 
 #[get("/r")]
 async fn detail(http_request: HttpRequest) -> impl Responder {
+    println!("Called /r");
     utils::profile::get_profile(http_request, true)
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("started server");
     HttpServer::new(|| {
         App::new()
             .service(contact)
             .service(detail)
             .service(Files::new("/assets", "assets"))
     })
-        .bind(("127.0.0.1", 8080))?
+        .bind(("0.0.0.0", 8080))?
         .run()
         .await
 }
