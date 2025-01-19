@@ -25,7 +25,7 @@ pub fn get_profile(http_request: HttpRequest, get_detail: bool) -> impl Responde
 
         let html_content = html_boilerplate
             .replace("{content}", &*runner(&res))
-            .replace("{url}", &*url);
+            .replace("{url}", url.strip_suffix("/").unwrap_or(&url));
         HttpResponse::Ok()
             .content_type("text/html; charset=utf-8")
             .body(html_content)
