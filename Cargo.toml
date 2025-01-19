@@ -4,10 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-actix-web = "4.3.1"
-actix-files = "0.6.6"
-shuttle-actix-web = "0.47.0"
-shuttle-runtime = "0.47.0"
+actix-web = "4.9.0"
 tokio = "1.26.0"
 async-stream = "0.3.6"
 regex = "1.10.6"
+rust-embed = "6.8.1"

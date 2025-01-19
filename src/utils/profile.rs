@@ -1,4 +1,3 @@
-use std::fs;
 // use std::io::Write;
 use actix_web::http::header::{USER_AGENT};
 use actix_web::{HttpRequest, HttpResponse, Responder};
@@ -16,13 +15,17 @@ pub fn get_profile(http_request: HttpRequest, get_detail: bool) -> impl Responde
     };
 
     if !agent.contains("curl") {
-        let html_boilerplate = fs::read_to_string("assets/stock.html").unwrap();
+        let html_boilerplate = crate::Asset::get("html/stock.html")
+            .and_then(|file| String::from_utf8(Vec::from(file.data)).ok())
+            .unwrap_or_else(|| "".to_string());
+
         let res = if get_detail { String::from(detail()) } else { String::from(contact()) };
-        let url = http_request.full_url().to_string().replace("http:", "https:");
+        // let url = http_request.full_url().to_string().replace("http:", "https:");
+        let url = http_request.full_url().to_string().replace("http://", "");
 
         let html_content = html_boilerplate
             .replace("{content}", &*runner(&res))
-            .replace("{url}", &*url);
+            .replace("{url}", url.strip_suffix("/").unwrap_or(&url));
         HttpResponse::Ok()
             .content_type("text/html; charset=utf-8")
             .body(html_content)
