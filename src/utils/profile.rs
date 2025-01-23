@@ -7,6 +7,10 @@ use actix_web::web::Bytes;
 use tokio::time::{sleep, Duration};
 use crate::utils::ascii_to_html::runner;
 
+fn calling_from_shell(agent: String) -> bool {
+    agent.contains("curl") || agent.contains("WindowsPowerShell")
+}
+
 pub fn get_profile(http_request: HttpRequest, get_detail: bool) -> impl Responder {
     let user_agent = http_request.headers().get(USER_AGENT);
     let agent = match user_agent {
@@ -14,7 +18,7 @@ pub fn get_profile(http_request: HttpRequest, get_detail: bool) -> impl Responde
         None => "User Agent Not Found",
     };
 
-    if !agent.contains("curl") {
+    if !calling_from_shell(String::from(agent)) {
         let html_boilerplate = crate::Asset::get("html/stock.html")
             .and_then(|file| String::from_utf8(Vec::from(file.data)).ok())
             .unwrap_or_else(|| "".to_string());
@@ -36,7 +40,7 @@ pub fn get_profile(http_request: HttpRequest, get_detail: bool) -> impl Responde
         let stream = stream! {
             for line in res.lines() {
                 yield Ok::<Bytes, std::io::Error>(Bytes::from(format!("{}\n", line).to_string()));
-                sleep(Duration::from_millis(100)).await;
+                sleep(Duration::from_millis(0)).await;  //  powershell 5 cannot show in pieces
             }
         };
         HttpResponse::Ok()
