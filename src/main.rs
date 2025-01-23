@@ -1,5 +1,7 @@
 use actix_web::{get, web, App, HttpRequest, HttpServer, Responder};
+use actix_web::web::ServiceConfig;
 use rust_embed::RustEmbed;
+use shuttle_actix_web::ShuttleActixWeb;
 
 #[derive(RustEmbed)]
 #[folder = "assets/"] // Specify the folder containing your assets
@@ -40,16 +42,28 @@ async fn serve_asset(req: HttpRequest) -> impl Responder {
     }
 }
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    println!("started server - best of luck");
-    HttpServer::new(|| {
-        App::new()
-            .service(contact)
-            .service(detail)
-            .route("/assets/{filename:.*}", web::get().to(serve_asset))
-    })
-        .bind(("0.0.0.0", 8080))?
-        .run()
-        .await
+// plain actix
+// #[actix_web::main]
+// async fn main() -> std::io::Result<()> {
+//     println!("started server - best of luck");
+//     HttpServer::new(|| {
+//         App::new()
+//             .service(contact)
+//             .service(detail)
+//             .route("/assets/{filename:.*}", web::get().to(serve_asset))
+//     })
+//         .bind(("0.0.0.0", 8080))?
+//         .run()
+//         .await
+// }
+
+//  shuttle
+#[shuttle_runtime::main]
+async fn main() -> ShuttleActixWeb<impl FnOnce(&mut ServiceConfig) + Send + Clone + 'static> {
+    let config = move |cfg: &mut ServiceConfig| {
+        cfg.service(contact);
+        cfg.service(detail);
+        cfg.route("/assets/{filename:.*}", web::get().to(serve_asset));
+    };
+    Ok(config.into())
 }
