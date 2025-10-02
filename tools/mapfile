@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# alternative to `mapfile -t` command in bash 4
+mapfile() {
+    local varname=$1
+    local line
+    local i=0
+    eval "$varname=()"  # Initialize the array
+
+    while IFS= read -r line; do
+        eval "$varname[i]=\$line"
+        ((i++))
+    done
+}
+
+if ! (return &>/dev/null); then
+	repeat-char "$@"
+fi

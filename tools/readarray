@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# alternative to `readarray -t` command in bash > 3
+readarray() {
+    local varname=$1
+    local line
+    local i=0
+    eval "$varname=()"
+
+    while IFS= read -r line; do
+        eval "$varname[i]=\$line"
+        ((i++))
+    done
+}
+
+if ! (return &>/dev/null); then
+	repeat-char "$@"
+fi

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+cmd_keys=('{{CURL_COMMAND_HERE}}')
+cmd_values=("$($1 | ./tools/custom-bansi-to-html -H)")
+
+inputs=()
+for i in "${!cmd_keys[@]}"; do
+    cmd="${cmd_keys[$i]}"
+    output="${cmd_values[$i]}"
+    s=$(jq -cnR --arg cmd "$cmd" '{
+        "cmd": $cmd,
+        "lines": [inputs]
+    }' <<< "$output") || exit 1
+    inputs+=("$s")
+done
+
+json=$(printf '%s\n' "${inputs[@]}" | jq -cn '[inputs]') || exit 1
+echo "const COMMANDS = $json;"

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+# Print the colorized YSAP logo and metadata used as the header for all pages
+# you can request via `curl`
+#
+# Author: Dave Eddy <dave@daveeddy.com>
+# Date: March 17, 2024
+# License: MIT
+
+. ./theme || exit
+. ./tools/repeat-char || exit
+. ./tools/mapfile || exit 1
+
+padding=1
+while getopts 'p:' opt; do
+	case "$opt" in
+		p) padding=$OPTARG;;
+		*) exit 1;;
+	esac
+done
+
+padding=$(repeat-char ' ' "$padding")
+
+mapfile logo < <(./make-logo)
+
+description=(
+	""
+	"${COLOR5}Janya (जन्य) Joshi$RST"
+	"${COLOR5}Senior Software Engineer$RST"
+	"${COLOR5}Enterprise AI & Data$RST"
+	"${COLOR5}Boeing India$RST"
+	"${COLOR1}{{FULL_URL}}$RST"
+	# ''
+	# "${COLOR5}Source: ${COLOR1}https://github.com/bahamas10/ysap$RST"
+)
+
+len=${#logo[@]}
+
+for ((i = 0; i < len; i++)); do
+	logo_line=${logo[i]}
+	desc_line=${description[i]}
+
+	echo "$logo_line$padding$desc_line"
+done
