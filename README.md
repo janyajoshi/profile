@@ -8,7 +8,7 @@ setup ec2
 connect via ssh
 
 ```shell
-ssh -i ~/keys/ec2-key.pem ec2-user@ec2-13-234-34-183.ap-south-1.compute.amazonaws.com
+ssh -i ~/keys/ec2-key.pem ec2-user@ec2-13-233-130-227.ap-south-1.compute.amazonaws.com
 ```
 
 install dependencies
@@ -71,7 +71,7 @@ copy folder
 
 ```shell
 cd /Users/janyajoshi/projects
-export ec2ip=13.234.34.183
+export ec2ip=13.233.130.227
 scp -r -i ~/keys/ec2-key.pem ./make-handson ec2-user@$ec2ip:~/.
 ```
 
