@@ -126,3 +126,10 @@ WantedBy=multi-user.target
 ```
 
 for some reason, incomming requests are logged into profile-server-error.log => check later
+
+If getting an error while deleting make-handson
+
+```shell
+sudo chown -R ec2-user:ec2-user make-handson # change ownership to ec2-user
+rm -rf make-handson # should work now
+```
