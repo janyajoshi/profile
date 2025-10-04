@@ -15,7 +15,7 @@ install dependencies
 
 ```shell
 sudo yum upgrade-minimal
-sudo yum install nginx make certbot python3-certbot-nginx
+sudo yum install nginx make certbot python3-certbot-nginx git
 sudo systemctl start nginx
 sudo systemctl enable nginx # auto-start on boot
 sudo systemctl status nginx
