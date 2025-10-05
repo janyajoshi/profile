@@ -72,7 +72,7 @@ copy folder
 ```shell
 cd /Users/janyajoshi/projects
 export ec2ip=13.233.130.227
-scp -r -i ~/keys/ec2-key.pem ./make-handson ec2-user@$ec2ip:~/.
+scp -r -i ~/keys/ec2-key.pem ./profile ec2-user@$ec2ip:~/.
 ```
 
 log back in using ssh
@@ -80,7 +80,7 @@ log back in using ssh
 check if we are able to build it
 
 ```shell
-cd /home/ec2-user/make-handson
+cd /home/ec2-user/profile
 make
 # check with IP on browser
 # ctrl + c
@@ -114,7 +114,7 @@ sudo systemctl enable profileserver.service
 Description=Service to host profile
 
 [Service]
-WorkingDirectory=/home/ec2-user/make-handson
+WorkingDirectory=/home/ec2-user/profile
 ExecStart=make
 Restart=on-failure
 RestartSec=3
@@ -127,9 +127,15 @@ WantedBy=multi-user.target
 
 for some reason, incomming requests are logged into profile-server-error.log => check later
 
-If getting an error while deleting make-handson
+If getting an error while deleting profile folder
 
 ```shell
-sudo chown -R ec2-user:ec2-user make-handson # change ownership to ec2-user
-rm -rf make-handson # should work now
+sudo chown -R ec2-user:ec2-user profile # change ownership to ec2-user
+rm -rf profile # should work now
+```
+
+search for a keyword in logs
+
+```shell
+grep -i "rj.in" profile-server-error.log
 ```
