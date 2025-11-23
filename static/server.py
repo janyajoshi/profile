@@ -26,6 +26,12 @@ class CustomHandler(SimpleHTTPRequestHandler):
         full_url = f"{host}{self.path if self.path != '/' else ''}"
         user_agent = self.headers.get('User-Agent', '').lower()
 
+        if self.path == "/rusted-graphs":
+            self.send_response(302)
+            self.send_header("Location", "https://rusted-graphs.janya.joshi-rj.in/")
+            self.end_headers()
+            return
+
         if self.path == '/static/commands.js':
             referer = self.headers.get("Referer")
             if not referer:
