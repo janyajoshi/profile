@@ -81,13 +81,19 @@ class CustomHandler(SimpleHTTPRequestHandler):
             self.wfile.write(content.encode("utf-8"))
 
     def do_POST(self):
+        logging.info("POST request")
         if self.path == "/rg-metrics":
+            logging.info("POST request: /rg-metrics")
             content_length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_length)
             raw_text = body.decode("utf-8", errors="ignore")
 
-            with open(os.path.expanduser("~/rg-init-logs.txt"), "a", encoding="utf-8") as f:
+            # logging.info(raw_text)
+            log_path = "/home/ec2-user/rg-init-logs.txt"
+            with open(log_path, "a", encoding="utf-8") as f:
+                logging.info("writing to: " + log_path)
                 f.write(self.headers.get('X-Real-IP', "unknown") + ": " + raw_text + "\n")
+                logging.info("written successfully")
 
             self.send_response(202)
             self.end_headers()
