@@ -80,6 +80,18 @@ class CustomHandler(SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(content.encode("utf-8"))
 
+    def do_POST(self):
+        if self.path == "/rg-metrics":
+            content_length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_length)
+            raw_text = body.decode("utf-8", errors="ignore")
+
+            with open(os.path.expanduser("~/rg-init-logs.txt"), "a", encoding="utf-8") as f:
+                f.write(self.headers.get('X-Real-IP', "unknown") + ": " + raw_text + "\n")
+
+            self.send_response(202)
+            self.end_headers()
+
 if __name__ == "__main__":
     PORT = 8000
     DIRECTORY = "_site"
